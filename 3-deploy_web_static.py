@@ -2,12 +2,19 @@
 # Fabfile to create and distribute an archive to a web server.
 import os.path
 from datetime import datetime
-from fabric.api import env, local, run, put
+from fabric.api import env, local, run, put, task
 
 
 
 env.hosts = ["35.174.185.198", "52.201.167.109"]
 
+@task
+def deploy():
+    """Create and distribute an archive to a web server."""
+    file = do_pack()
+    if file is None:
+        return False
+    return do_deploy(file)
 
 def do_pack():
     """Create a tar gzipped archive of the directory web_static."""
@@ -60,11 +67,3 @@ def do_deploy(archive_path):
            format(name)).failed is True:
         return False
     return True
-
-
-def deploy():
-    """Create and distribute an archive to a web server."""
-    file = do_pack()
-    if file is None:
-        return False
-    return do_deploy(file)

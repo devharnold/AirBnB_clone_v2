@@ -12,7 +12,7 @@ def do_pack():
     """
     generates a .tgz archive from the contents of the web_static folder
     """
-    if not os.path.exists("versions"):
+    if not exists("versions"):
         local("mkdir -p versions")
 
     time_format = "%Y%m%d%H%M%S"
@@ -22,7 +22,7 @@ def do_pack():
     if result.failed:
         return None
     else:
-        return os.path.join("versions", archive_name)
+        return "versions/{}".format(archive_name)
 
 
 def do_deploy(archive_path):
@@ -41,7 +41,7 @@ def do_deploy(archive_path):
         run('rm -rf /data/web_static/current')
         run('ln -s {} /data/web_static/current'.format(release_folder))
 
-        print("Deploy a new one!")
+        print("Deployed a new one!")
         
     except Exception as e:
         print("Deploy fail!:", str(e))

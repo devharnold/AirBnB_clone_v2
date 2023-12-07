@@ -82,7 +82,7 @@ def do_clean(number=0):
             for _folder in _folders:
                 run("rm -rf {folder}".format(folder=_folder))
 
-@task
+
 def deploy():
     """Creates and Distributes a .tgz archive through web servers
     """

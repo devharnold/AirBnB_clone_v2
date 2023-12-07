@@ -8,6 +8,23 @@ from os.path import exists
 
 env.hosts = ['35.174.185.198', '52.201.167.109']
 
+def do_pack():
+    """
+    generates a .tgz archive from the contents of the web_static folder
+    """
+    if not os.path.exists("versions"):
+        local("mkdir -p versions")
+
+    time_format = "%Y%m%d%H%M%S"
+    archive_name = "web_static_{}.tgz".format(datetime.utcnow().strftime(time_format))
+    
+    result = local("tar -cvzf versions/{} web_static".format(archive_name))
+    if result.failed:
+        return None
+    else:
+        return os.path.join("versions", archive_name)
+
+
 def do_deploy(archive_path):
     if not exists(archive_path):
         return False

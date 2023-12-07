@@ -5,6 +5,7 @@ Fabric script that distributes an archive to your web servers
 from datetime import datetime
 from fabric.api import env, put, run, local
 from os.path import exists
+from os import path
 
 env.hosts = ['35.174.185.198', '52.201.167.109']
 
@@ -26,23 +27,24 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    if not exists(archive_path):
-        return False
-    
-    try:
-        put(archive_path, '/tmp')
+    """Distributes an .tgz archive through web servers
+    """
 
-        archive_filename = archive_path.split('/')[-1]
-        release_folder = '/data/web_static/releases/{}'.format(archive_filename.split('.')[0])
-        run('mkdir -p {}'.format(release_folder))
-        run('tar -xzf /tmp/{} -C {}'.format(archive_filename, release_folder))
-        run('rm /tmp/{}'.format(archive_filename))
-        run('mv {}/web_static/* {}'.format(release_folder, release_folder))
-        run('rm -rf /data/web_static/current')
-        run('ln -s {} /data/web_static/current'.format(release_folder))
+    if path.exists(archive_path):
+        archive = archive_path.split('/')[1]
+        a_path = "/tmp/{}".format(archive)
+        folder = archive.split('.')[0]
+        f_path = "/data/web_static/releases/{}/".format(folder)
 
-        print("Deployed a new one!")
-        
-    except Exception as e:
-        print("Deploy fail!:", str(e))
-        return False
+        put(archive_path, a_path)
+        run("mkdir -p {}".format(f_path))
+        run("tar -xzf {} -C {}".format(a_path, f_path))
+        run("rm {}".format(a_path))
+        run("mv -f {}web_static/* {}".format(f_path, f_path))
+        run("rm -rf {}web_static".format(f_path))
+        run("rm -rf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(f_path))
+
+        return True
+
+    return False

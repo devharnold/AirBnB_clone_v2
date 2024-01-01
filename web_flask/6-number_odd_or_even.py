@@ -12,6 +12,8 @@
 from flask import Flask, render_template
 
 app = Flask(__name__)
+app.jinja_env.trim_blocks = True
+app.jinja_env.trim_blocks = True
 
 @app.route("/", strict_slashes=False)
 def display_hello_hbnb(text):
@@ -42,12 +44,12 @@ def diplay_n_number(n):
 
 @app.route("/number_template/<n>", strict_slashes=False)
 def display_template(n):
-    """display a number template"""
+    """display a HTML page only if an integer"""
     return render_template('5-number.html', n=n)
 
 @app.route("/number_odd_or_even/<n>", strict_slashes=False)
 def display_template(n):
-    """display a odd or even number"""
+    """display a odd or even number, only if an integer"""
     return render_template('6-number_odd_or_even.html', n=n)
 
 if __name__ == "__main__":

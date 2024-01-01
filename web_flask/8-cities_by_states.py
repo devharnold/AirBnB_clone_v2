@@ -3,6 +3,8 @@
 Start a Flask app
 Import models, storage
 App listens on 0.0.0.0 port=50000
+Routes
+    /cities_by_states: Display cities by states
 """
 from flask import Flask, render_template
 from models import storage

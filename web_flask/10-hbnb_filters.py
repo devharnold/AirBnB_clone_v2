@@ -2,6 +2,8 @@
 """Start Flask app
     import storage
     App listens on 0.0.0.0 port=5000
+    Routes
+        /hbnb_filters: Display States, Amenities
 """
 from flask import Flask, render_template
 from models import storage

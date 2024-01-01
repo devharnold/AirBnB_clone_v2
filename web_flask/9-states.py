@@ -2,6 +2,9 @@
 """Start a Flask app
     import Storage
     App listens on 0.0.0.0 port=5000
+    Routes
+        /states: Display states
+        /states/<id>: List states ID
 """
 from flask import Flask, render_template
 from models import storage
